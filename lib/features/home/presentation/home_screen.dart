@@ -7,6 +7,7 @@ import '../../../app/theme/app_colors.dart';
 import '../../../core/widgets/avatar_widget.dart';
 import '../../../features/expenses/providers/expenses_provider.dart';
 import '../../../features/juntadas/providers/juntadas_provider.dart';
+import '../../../features/partidos/providers/partidos_provider.dart';
 import '../../../features/prode/providers/pronosticos_provider.dart';
 import '../../../shared/providers/theme_provider.dart';
 import '../../../shared/providers/user_provider.dart';
@@ -122,6 +123,14 @@ class HomeScreen extends ConsumerWidget {
                 badge: _ProdeBadge(),
                 onTap: () => context.go(AppRoutes.prode),
               ),
+              _ModuleCard(
+                emoji: '⚽',
+                title: 'Partidos',
+                subtitle: 'Cartas del equipo',
+                color: AppColors.partidosColor,
+                badge: _PartidosBadge(),
+                onTap: () => context.go(AppRoutes.partidos),
+              ),
             ],
           ),
         ],
@@ -164,6 +173,16 @@ class _ProdeBadge extends ConsumerWidget {
     final totalPts = leaderboard.fold<int>(0, (s, e) => s + e.puntos);
     if (totalPts == 0) return const SizedBox.shrink();
     return _BadgeChip(label: '${leaderboard.first.user.nickname} lidera', color: AppColors.prodeColor);
+  }
+}
+
+class _PartidosBadge extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final count = ref.watch(partidosProvider).length;
+    if (count == 0) return const SizedBox.shrink();
+    return _BadgeChip(
+        label: '$count jugados', color: AppColors.partidosColor);
   }
 }
 

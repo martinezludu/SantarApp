@@ -32,6 +32,7 @@ class AppColors {
   static const expensesColor = Color(0xFF60A5FA); // azul
   static const juntadasColor = Color(0xFFFF6B35); // naranja
   static const statsColor = Color(0xFFA78BFA); // violeta
+  static const partidosColor = Color(0xFFF4C430); // dorado (cartas FUT)
 
   static const danger = Color(0xFFEF4444);
 }

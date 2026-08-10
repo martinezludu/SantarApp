@@ -24,14 +24,6 @@ UserModel _baseFromSeed(({String id, String nick, String emoji}) s) =>
 
 final List<UserModel> _baseUsers = _seed.map(_baseFromSeed).toList();
 
-UserModel? _findByNick(String nick) {
-  final n = nick.trim().toLowerCase();
-  for (final u in _baseUsers) {
-    if (u.nickname.toLowerCase() == n) return u;
-  }
-  return null;
-}
-
 UserModel? _findById(String id) {
   for (final u in _baseUsers) {
     if (u.id == id) return u;
@@ -69,10 +61,6 @@ final groupMembersProvider = Provider<List<UserModel>>((ref) {
   }).toList();
 });
 
-/// Solo los nombres, para mostrarlos en el login.
-final usernamesProvider =
-    Provider<List<String>>((ref) => _baseUsers.map((u) => u.nickname).toList());
-
 class CurrentUserNotifier extends Notifier<UserModel?> {
   static const _sessionKey = 'current_user_id';
 
@@ -86,18 +74,14 @@ class CurrentUserNotifier extends Notifier<UserModel?> {
     return _applyOverride(base, prefs);
   }
 
-  /// Intenta iniciar sesión. Devuelve `null` si OK, o un mensaje de error.
-  String? login(String username, String password) {
-    final base = _findByNick(username);
-    if (base == null) return 'Ese usuario no existe';
-    // La contraseña es el nombre.
-    if (password.trim().toLowerCase() != base.nickname.toLowerCase()) {
-      return 'Contraseña incorrecta';
-    }
+  /// Selecciona quién sos (sin contraseña). Persiste la elección en el
+  /// dispositivo para no tener que elegir cada vez.
+  void select(String id) {
+    final base = _findById(id);
+    if (base == null) return;
     final prefs = ref.read(sharedPreferencesProvider);
     prefs.setString(_sessionKey, base.id);
     state = _applyOverride(base, prefs);
-    return null;
   }
 
   /// Edita el perfil (el apodo NO se puede cambiar: es el login).

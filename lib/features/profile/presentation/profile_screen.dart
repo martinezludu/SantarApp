@@ -49,9 +49,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
   }
 
-  void _logout() {
+  void _changeUser() {
     ref.read(currentUserProvider.notifier).logout();
-    context.go('/login');
+    context.go('/quien-sos');
   }
 
   @override
@@ -140,16 +140,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             FilledButton(onPressed: _save, child: const Text('Guardar cambios')),
             const SizedBox(height: 8),
             OutlinedButton.icon(
-              onPressed: _logout,
+              onPressed: _changeUser,
               style: OutlinedButton.styleFrom(
                 minimumSize: const Size.fromHeight(52),
-                foregroundColor: theme.colorScheme.error,
-                side: BorderSide(color: theme.colorScheme.error),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14)),
               ),
-              icon: const Icon(Icons.logout_rounded, size: 18),
-              label: const Text('Cerrar sesión'),
+              icon: const Icon(Icons.swap_horiz_rounded, size: 18),
+              label: const Text('Cambiar de usuario'),
             ),
           ],
         ),
